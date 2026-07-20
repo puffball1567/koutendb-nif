@@ -1,11 +1,11 @@
-## RocheDB NIF adapter matrix demo.
+## KoutenDB NIF adapter matrix demo.
 ##
-## Stores both NIF text and BIF bytes in RocheDB, then reads them back with
+## Stores both NIF text and BIF bytes in KoutenDB, then reads them back with
 ## explicit codec metadata.
 
 import std/[os, strutils]
-import rochedb
-import rochedb_nif
+import koutendb
+import koutendb_nif
 
 type DemoCase = object
   ring: string
@@ -13,9 +13,9 @@ type DemoCase = object
 
 const Cases = [
   DemoCase(ring: "artifacts/nif/basic",
-           nif: "(record title \"RocheDB\" kind basic)"),
+           nif: "(record title \"KoutenDB\" kind basic)"),
   DemoCase(ring: "artifacts/nif/line-info",
-           nif: "(record@5,3,file.nim title@2,0#field# \"RocheDB\"@4,0)"),
+           nif: "(record@5,3,file.nim title@2,0#field# \"KoutenDB\"@4,0)"),
   DemoCase(ring: "artifacts/nif/symbol",
            nif: "(record :thing.0.module value)")
 ]

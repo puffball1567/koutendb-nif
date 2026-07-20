@@ -8,10 +8,10 @@ switch("mm", "arc")
 #
 #   oss/
 #     nifkit/
-#     rochedb-nif/
+#     koutendb-nif/
 #
 # After nifkit is accepted into the Nimble package list, this can be replaced
-# by a normal `requires "nifkit >= 0.1.0"` dependency in rochedb_nif.nimble.
+# by a normal `requires "nifkit >= 0.1.0"` dependency in koutendb_nif.nimble.
 switch("path", "src")
 switch("path", "../nifkit/src")
 switch("path", "nifkit/src")

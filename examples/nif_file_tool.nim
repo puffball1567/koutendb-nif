@@ -1,7 +1,7 @@
 ## Minimal file tool used by CLI integration demos.
 
 import std/[os, strutils]
-import rochedb_nif
+import koutendb_nif
 
 proc usage() =
   quit "usage: nif_file_tool encode|decode --in=FILE --out=FILE", 2

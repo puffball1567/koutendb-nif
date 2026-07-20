@@ -1,9 +1,9 @@
 import std/[os, tempfiles, unittest]
-import rochedb
-import rochedb_nif
+import koutendb
+import koutendb_nif
 
 const
-  NifText = "(record@5,3,file.nim title@2,0#field# \"RocheDB\"@4,0)"
+  NifText = "(record@5,3,file.nim title@2,0#field# \"KoutenDB\"@4,0)"
   UpdatedNifText = "(record title \"Updated\" kind adapter)"
 
 type StorageCase = object
@@ -11,7 +11,7 @@ type StorageCase = object
   source: string
   codec: PayloadCodec
 
-suite "RocheDB integration":
+suite "KoutenDB integration":
   test "stores nifkit-produced BIF bytes with explicit codec metadata":
     var db = open()
     try:
@@ -25,10 +25,10 @@ suite "RocheDB integration":
       db.close()
 
   test "persists and reopens BIF payloads without changing bytes":
-    let dir = createTempDir("rochedb-nif", "persist")
+    let dir = createTempDir("koutendb-nif", "persist")
     try:
       let bif = nifToBif(NifText)
-      var id: RocheId
+      var id: KoutenId
       block:
         var db = open(dataDir = dir)
         try:
@@ -56,8 +56,8 @@ suite "RocheDB integration":
     var db = open()
     try:
       let bif = nifToBif(NifText)
-      var id: RocheId
-      db.transaction(proc(tx: RocheTx) =
+      var id: KoutenId
+      db.transaction(proc(tx: KoutenTx) =
         id = tx.put(encodedPayload(bif, pcBif), ring = "artifacts/nif")
       )
       let stored = db.getEncoded(id)
@@ -109,13 +109,13 @@ suite "RocheDB integration":
   test "storage matrix preserves explicit NIF and BIF codecs across rings":
     let cases = [
       StorageCase(ring: "matrix/nif/basic",
-                  source: "(record title \"RocheDB\" kind nif)",
+                  source: "(record title \"KoutenDB\" kind nif)",
                   codec: pcNif),
       StorageCase(ring: "matrix/bif/basic",
-                  source: "(record title \"RocheDB\" kind bif)",
+                  source: "(record title \"KoutenDB\" kind bif)",
                   codec: pcBif),
       StorageCase(ring: "matrix/bif/line-info",
-                  source: "(record@5,3,file.nim title@2,0 \"RocheDB\"@4,0)",
+                  source: "(record@5,3,file.nim title@2,0 \"KoutenDB\"@4,0)",
                   codec: pcBif)
     ]
     var db = open()
