@@ -1,5 +1,5 @@
 import std/unittest
-import ../src/rochedb_nif
+import ../src/koutendb_nif
 
 proc addLe64(dest: var string; value: uint64) =
   for shift in countup(0, 56, 8): dest.add char((value shr shift) and 0xff)

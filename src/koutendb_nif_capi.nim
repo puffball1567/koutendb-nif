@@ -1,4 +1,4 @@
-## Stable RocheDB-named C ABI for the NIF/BIF codec.
+## Stable KoutenDB-named C ABI for the NIF/BIF codec.
 
 import nifkit
 
@@ -34,7 +34,7 @@ proc resetOutput(outData: ptr pointer; outLen: ptr csize_t) =
   outData[] = nil
   outLen[] = 0
 
-proc roche_nif_to_bif*(nifData: pointer; nifLen: csize_t;
+proc kouten_nif_to_bif*(nifData: pointer; nifLen: csize_t;
                         outBif: ptr pointer; outLen: ptr csize_t): cint
                         {.exportc, dynlib.} =
   try:
@@ -45,7 +45,7 @@ proc roche_nif_to_bif*(nifData: pointer; nifLen: csize_t;
   except CatchableError:
     setError(getCurrentExceptionMsg())
 
-proc roche_bif_to_nif*(bifData: pointer; bifLen: csize_t;
+proc kouten_bif_to_nif*(bifData: pointer; bifLen: csize_t;
                         outNif: ptr pointer; outLen: ptr csize_t): cint
                         {.exportc, dynlib.} =
   try:
@@ -56,7 +56,7 @@ proc roche_bif_to_nif*(bifData: pointer; bifLen: csize_t;
   except CatchableError:
     setError(getCurrentExceptionMsg())
 
-proc roche_validate_bif*(bifData: pointer; bifLen: csize_t): cint
+proc kouten_validate_bif*(bifData: pointer; bifLen: csize_t): cint
                         {.exportc, dynlib.} =
   try:
     validateBif(copyInput(bifData, bifLen))
@@ -65,8 +65,8 @@ proc roche_validate_bif*(bifData: pointer; bifLen: csize_t): cint
   except CatchableError:
     setError(getCurrentExceptionMsg())
 
-proc roche_nif_free*(buffer: pointer) {.exportc, dynlib.} =
+proc kouten_nif_free*(buffer: pointer) {.exportc, dynlib.} =
   if buffer != nil: dealloc(buffer)
 
-proc roche_nif_last_error*(): cstring {.exportc, dynlib.} =
+proc kouten_nif_last_error*(): cstring {.exportc, dynlib.} =
   lastError.cstring

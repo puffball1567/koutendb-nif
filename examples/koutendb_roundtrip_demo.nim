@@ -1,13 +1,13 @@
-## RocheDB integration demo for the rochedb-nif adapter.
+## KoutenDB integration demo for the koutendb-nif adapter.
 ##
 ## This verifies the intended ownership boundary:
-## - rochedb-nif/nifkit converts NIF text to BIF bytes.
-## - RocheDB stores and returns the bytes with explicit codec metadata.
-## - rochedb-nif/nifkit decodes the retrieved BIF bytes back to NIF text.
+## - koutendb-nif/nifkit converts NIF text to BIF bytes.
+## - KoutenDB stores and returns the bytes with explicit codec metadata.
+## - koutendb-nif/nifkit decodes the retrieved BIF bytes back to NIF text.
 
 import std/[os, strutils]
-import rochedb
-import rochedb_nif
+import koutendb
+import koutendb_nif
 
 proc argValue(name, defaultValue: string): string =
   let prefix = "--" & name & "="
@@ -20,7 +20,7 @@ when isMainModule:
   let dataDir = argValue("data", "")
   var db = open(dataDir = dataDir)
   try:
-    let nifText = "(record title \"RocheDB\" kind adapter)"
+    let nifText = "(record title \"KoutenDB\" kind adapter)"
     let bifBytes = nifToBif(nifText)
     let id = db.put(encodedPayload(bifBytes, pcBif), ring = "artifacts/nif")
 
@@ -29,7 +29,7 @@ when isMainModule:
     doAssert stored.data == bifBytes
     doAssert bifToNif(stored.data) == nifText
 
-    echo "rochedb-nif RocheDB roundtrip passed codec=",
+    echo "koutendb-nif KoutenDB roundtrip passed codec=",
          stored.codec.payloadCodecName, " bytes=", stored.data.len
   finally:
     db.close()
@@ -40,7 +40,7 @@ when isMainModule:
       let page = reopened.listByRing("artifacts/nif", limit = 1)
       doAssert page.items.len == 1
       doAssert page.items[0].codec == pcBif
-      doAssert bifToNif(page.items[0].payload) == "(record title \"RocheDB\" kind adapter)"
-      echo "rochedb-nif persisted RocheDB roundtrip passed"
+      doAssert bifToNif(page.items[0].payload) == "(record title \"KoutenDB\" kind adapter)"
+      echo "koutendb-nif persisted KoutenDB roundtrip passed"
     finally:
       reopened.close()

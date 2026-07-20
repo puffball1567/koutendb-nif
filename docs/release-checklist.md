@@ -1,6 +1,6 @@
 # Release Checklist
 
-This checklist is for publishing a rochedb-nif release.
+This checklist is for publishing a koutendb-nif release.
 
 ## Local Verification
 
@@ -12,14 +12,14 @@ nimble verifyCore -y
 
 The core suite covers:
 
-- RocheDB-facing NIF text to BIF binary encoding
-- RocheDB-facing BIF binary to canonical NIF text decoding
+- KoutenDB-facing NIF text to BIF binary encoding
+- KoutenDB-facing BIF binary to canonical NIF text decoding
 - BIF validation
 - adapter matrix fixtures
 - line-info fixtures
-- RocheDB-named C ABI contract behavior
+- KoutenDB-named C ABI contract behavior
 
-Run the RocheDB-backed integration suite when the full local workspace is
+Run the KoutenDB-backed integration suite when the full local workspace is
 available:
 
 ```sh
@@ -32,7 +32,7 @@ That suite expects:
 oss/
   ceresdb/
   nifkit/
-  rochedb-nif/
+  koutendb-nif/
   sodiumkit/
 ```
 
@@ -45,23 +45,23 @@ Pushes and pull requests run `nimble verifyCore -y` on:
 - `windows-latest`
 
 The CI workflow also checks out `nifkit` from the same GitHub owner into the
-`nifkit/` subdirectory at `v0.1.0` because rochedb-nif remains a thin adapter
+`nifkit/` subdirectory at `v0.1.0` because koutendb-nif remains a thin adapter
 until nifkit is published as a normal Nimble dependency.
 
 ## Dependency Boundary
 
-`rochedb-nif` may depend on `nifkit` and may test against RocheDB integration
+`koutendb-nif` may depend on `nifkit` and may test against KoutenDB integration
 boundaries. The general-purpose NIF/BIF codec must stay in `nifkit`; this
-repository should keep RocheDB naming, adapter docs, C ABI naming, and
-RocheDB-specific integration tests.
+repository should keep KoutenDB naming, adapter docs, C ABI naming, and
+KoutenDB-specific integration tests.
 
 ## Versioning
 
-Update `version` in `rochedb_nif.nimble`, then create a matching Git tag:
+Update `version` in `koutendb_nif.nimble`, then create a matching Git tag:
 
 ```sh
 git status --short
-git tag -a v0.1.0 -m "rochedb-nif v0.1.0"
+git tag -a v0.1.0 -m "koutendb-nif v0.1.0"
 git push origin main:main
 git push origin refs/tags/v0.1.0:refs/tags/v0.1.0
 ```
