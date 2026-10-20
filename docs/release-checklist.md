@@ -17,7 +17,8 @@ The core suite covers:
 - BIF validation
 - adapter matrix fixtures
 - line-info fixtures
-- KoutenDB-named C ABI contract behavior
+- KoutenDB-named and legacy RocheDB-named C ABI contract behavior through
+  both shared-library entry points
 
 Run the KoutenDB-backed integration suite when the full local workspace is
 available:
@@ -44,8 +45,9 @@ Pushes and pull requests run `nimble verifyCore -y` on:
 - `macos-latest`
 - `windows-latest`
 
-The CI workflow also checks out `nifkit` from the same GitHub owner into the
-`nifkit/` subdirectory at `v0.1.0` because koutendb-nif remains a thin adapter
+The CI workflow checks Nim 2.2.0 and 2.2.12 on each OS. It also checks out
+`nifkit` from the same GitHub owner into the
+`nifkit/` subdirectory at `v0.4.1` because koutendb-nif remains a thin adapter
 until nifkit is published as a normal Nimble dependency.
 
 ## Dependency Boundary
