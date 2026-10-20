@@ -70,3 +70,24 @@ proc kouten_nif_free*(buffer: pointer) {.exportc, dynlib.} =
 
 proc kouten_nif_last_error*(): cstring {.exportc, dynlib.} =
   lastError.cstring
+
+# Keep the original ABI available after the KoutenDB rename.
+proc roche_nif_to_bif*(nifData: pointer; nifLen: csize_t;
+                       outBif: ptr pointer; outLen: ptr csize_t): cint
+                       {.exportc, dynlib.} =
+  kouten_nif_to_bif(nifData, nifLen, outBif, outLen)
+
+proc roche_bif_to_nif*(bifData: pointer; bifLen: csize_t;
+                       outNif: ptr pointer; outLen: ptr csize_t): cint
+                       {.exportc, dynlib.} =
+  kouten_bif_to_nif(bifData, bifLen, outNif, outLen)
+
+proc roche_validate_bif*(bifData: pointer; bifLen: csize_t): cint
+                       {.exportc, dynlib.} =
+  kouten_validate_bif(bifData, bifLen)
+
+proc roche_nif_free*(buffer: pointer) {.exportc, dynlib.} =
+  kouten_nif_free(buffer)
+
+proc roche_nif_last_error*(): cstring {.exportc, dynlib.} =
+  kouten_nif_last_error()

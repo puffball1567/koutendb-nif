@@ -36,11 +36,11 @@ oss/
 `config.nims` automatically adds `../nifkit/src` to the Nim import path, so the
 adapter works without repeating `--path:../nifkit/src` in every command. After
 `nifkit` is published to Nimble, this will become a normal package dependency.
-For the `koutendb-nif v0.1.0` release line, use `nifkit v0.1.0`.
+For `koutendb-nif v0.1.1`, use `nifkit v0.4.1`.
 
 ```sh
 git clone https://github.com/puffball1567/nifkit
-git -C nifkit checkout v0.1.0
+git -C nifkit checkout v0.4.1
 git clone https://github.com/puffball1567/koutendb-nif
 cd koutendb-nif
 nimble verifyCore -y
@@ -134,6 +134,16 @@ int kouten_validate_bif(const void *bif_data, size_t bif_len);
 void kouten_nif_free(void *buffer);
 const char *kouten_nif_last_error(void);
 ```
+
+The previous `rochedb_nif` Nim import, `rochedbNifAdapterInfo`, and
+`include/rochedb_nif.h` with its `roche_*` C symbols remain available for
+existing consumers. Both C symbol families share buffer ownership and
+thread-local error state. The `src/rochedb_nif_capi.nim` entry point also
+remains available when building a shared library.
+
+NIFKit v0.4.1 accepts hexadecimal, octal, and binary integers, numeric digit
+separators, and literal `#` and `:` inside quoted strings. Canonical NIF output
+and the BIF v5 format remain unchanged.
 
 All conversion functions return `0` on success and non-zero on failure.
 `kouten_nif_last_error()` is thread-local. Inputs are byte slices; passing

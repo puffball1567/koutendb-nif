@@ -6,11 +6,12 @@ on:
 
 jobs:
   verify:
-    name: verify (${{ matrix.os }})
+    name: verify (${{ matrix.os }}, Nim ${{ matrix.nim }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        nim: ['2.2.0', '2.2.12']
         os:
           - ubuntu-latest
           - macos-latest
@@ -25,12 +26,12 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/nifkit
           path: nifkit
-          ref: v0.1.0
+          ref: v0.4.1
 
       - name: Set up Nim
         uses: jiro4989/setup-nim-action@v2
         with:
-          nim-version: '2.2.0'
+          nim-version: ${{ matrix.nim }}
 
       - name: Show toolchain
         run: |
