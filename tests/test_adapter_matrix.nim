@@ -1,5 +1,6 @@
 import std/[strutils, unittest]
 import koutendb_nif
+import rochedb_nif
 
 type AdapterCase = object
   name: string
@@ -7,6 +8,9 @@ type AdapterCase = object
   expected: string
 
 const Cases = [
+  AdapterCase(name: "current NIF numeric and string syntax",
+              source: "(record 0xFF 0o377 0b1111_1111 1_000 1_2.5E+0_1 \"key: #value\")",
+              expected: "(record 255 255 255 1000 125.0 \"key\\3A \\23value\")"),
   AdapterCase(name: "basic record",
               source: "(record title \"KoutenDB\" -5 12u)",
               expected: "(record title \"KoutenDB\" -5 12u)"),
@@ -25,6 +29,11 @@ suite "KoutenDB NIF adapter matrix":
   test "adapter reports nifkit backend":
     check koutendbNifAdapterInfo().contains("nifkit")
     check codecInfo().contains("NIF/BIF v5")
+
+  test "legacy adapter import remains compatible":
+    check rochedbNifAdapterInfo() == "rochedb-nif: RocheDB adapter over nifkit"
+    let bif = rochedb_nif.nifToBif("(record 0xFF)")
+    check koutendb_nif.bifToNif(bif) == "(record 255)"
 
   for item in Cases:
     test item.name:

@@ -24,14 +24,15 @@ put_output="$("$WORK/kouten" put --data="$WORK/data" --ring=artifacts/nif \
 id="$(printf '%s\n' "$put_output" | awk '{for (i = 1; i <= NF; i++) if ($i ~ /^rawId=/) {sub(/^rawId=/, "", $i); print $i}}')"
 test -n "$id"
 
-base64_output="$("$WORK/kouten" get --data="$WORK/data" --id="$id" --view=base64)"
-printf '%s\n' "$base64_output" | grep -q '^codec=bif encoding=base64$'
-printf '%s\n' "$base64_output" | awk 'NR == 2 {print}' | base64 -d > "$WORK/output.bif"
-"$WORK/nif_file_tool" decode --in="$WORK/output.bif" --out="$WORK/output.nif"
+base64_output="$("$WORK/kouten" get --data="$WORK/data" --ring=artifacts/nif --id="$id" --view=base64)"
+printf '%s\n' "$base64_output" > "$WORK/output.json"
+"$WORK/nif_file_tool" decode-cli --in="$WORK/output.json" --out="$WORK/output.nif"
 
 cmp "$WORK/input.nif" "$WORK/output.nif"
 
-auto_output="$("$WORK/kouten" get --data="$WORK/data" --id="$id" --view=auto)"
-printf '%s\n' "$auto_output" | grep -q '^codec=bif encoding=base64$'
+auto_output="$("$WORK/kouten" get --data="$WORK/data" --ring=artifacts/nif --id="$id" --view=auto)"
+printf '%s\n' "$auto_output" > "$WORK/auto.json"
+"$WORK/nif_file_tool" decode-cli --in="$WORK/auto.json" --out="$WORK/auto.nif"
+cmp "$WORK/input.nif" "$WORK/auto.nif"
 
 echo "koutendb-nif CLI roundtrip passed"
